@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sonora Music</title>
+    <meta name="description" content="Modern online music streaming player with real-time audio visualizer, synchronized lyrics, custom playlists, and curated soundscapes." />
+    <meta property="og:title" content="Sonora Music" />
+    <meta property="og:description" content="Modern online music streaming player with real-time audio visualizer, synchronized lyrics, custom playlists, and curated soundscapes." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+      (function() {
+        // Prevent extension errors from breaking application execution
+        window.addEventListener('error', function(event) {
+          if (event && (
+            (event.filename && event.filename.indexOf('chrome-extension://') !== -1) ||
+            (event.message && event.message.indexOf('Cannot set property fetch') !== -1)
+          )) {
+            event.preventDefault();
+            event.stopImmediatePropagation && event.stopImmediatePropagation();
+          }
+        }, true);
+
+        // Ensure window.fetch is writable and has a setter for extensions/test runners
+        try {
+          var originalFetch = window.fetch ? window.fetch.bind(window) : null;
+          var currentFetch = originalFetch;
+
+          // Patch Window.prototype.fetch if it has a getter without setter
+          if (typeof Window !== 'undefined' && Window.prototype) {
+            var protoDesc = Object.getOwnPropertyDescriptor(Window.prototype, 'fetch');
+            if (protoDesc && !protoDesc.set) {
+              Object.defineProperty(Window.prototype, 'fetch', {
+                get: function() {
+                  return currentFetch || (originalFetch ? originalFetch.bind(this) : undefined);
+                },
+                set: function(val) {
+                  currentFetch = val;
+                },
+                configurable: true,
+                enumerable: true
+              });
+            }
+          }
+
+          // Also define own property on window to allow direct assignment
+          Object.defineProperty(window, 'fetch', {
+            get: function() {
+              return currentFetch;
+            },
+            set: function(val) {
+              currentFetch = val;
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (err) {
+          // Fallback if defineProperty fails
+          try {
+            window.fetch = window.fetch;
+          } catch (e) {}
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-[#0b0f17] text-slate-100 antialiased selection:bg-violet-500/30 selection:text-violet-200">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

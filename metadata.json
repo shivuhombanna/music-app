@@ -1,0 +1,6 @@
+{
+  "name": "Sonora Music",
+  "description": "Modern online music streaming player with real-time audio visualizer, synchronized lyrics, custom playlists, and curated soundscapes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
